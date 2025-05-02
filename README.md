@@ -63,18 +63,8 @@ This document outlines the requirements and best practices for your C++ object-o
 - Create a class that contains **pointers to base class objects**, and:
   - Use **virtual functions** via the base interface.
   - Implement:
-    - ✅ Copy constructor and assignment operator using **copy-and-swap**.
     - 🔁 Safe downcasting via `dynamic_cast` or `std::dynamic_pointer_cast`.
     - 💡 Use of **smart pointers** is **strongly recommended** (`std::shared_ptr`, `std::unique_ptr`).
-
----
-
-## ⚠️ Exceptions
-
-- Build a **custom exception hierarchy**, deriving from `std::exception`.
-- Define **at least 3 custom exception classes**, each handling a **distinct error type**.
-- Use exceptions **meaningfully**:
-  - e.g., `throw` in constructors, `try/catch` in `main`.
 
 ---
 
@@ -108,10 +98,8 @@ This document outlines the requirements and best practices for your C++ object-o
 - [x] Clone method implemented
 - [x] Base constructor explicitly called
 - [x] Smart pointer-based container class
-- [x] Custom exception hierarchy
 - [x] Static members where appropriate
 - [x] STL usage
-- [x] Clean, high-level design with minimal boilerplate
 
 ---
 
