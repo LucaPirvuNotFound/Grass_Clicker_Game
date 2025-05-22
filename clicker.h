@@ -10,7 +10,7 @@ public:
     std::shared_ptr<PowerUp> clone() const override;
 
 private:
-    int boostAmount;
+    int m_boostAmount;
 };
 
 #endif

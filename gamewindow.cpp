@@ -3,41 +3,44 @@
 #include <QString>
 
 GameWindow::GameWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+    m_powerUpHandler([this]() {
+        m_musicToggleButton->show();
+    })
 {
     setFixedSize(600, 500);
     setWindowTitle("Grass Clicker");
 
-    grassButton = new QPushButton("Click Grass", this);
-    grassButton->setGeometry(250, 150, 100, 50);
-    connect(grassButton, &QPushButton::clicked, this, &GameWindow::onGrassButtonClicked);
+    m_grassButton = new QPushButton("Click Grass", this);
+    m_grassButton->setGeometry(250, 150, 100, 50);
+    connect(m_grassButton, &QPushButton::clicked, this, &GameWindow::onGrassButtonClicked);
 
-    grassLabel = new QLabel("Grass: 0", this);
-    grassLabel->setGeometry(250, 100, 200, 30);
+    m_grassLabel = new QLabel("Grass: 0", this);
+    m_grassLabel->setGeometry(250, 100, 200, 30);
 
     for (int i = 0; i < 4; ++i) {
         QPushButton* btn = new QPushButton(this);
         btn->setGeometry(50 + i * 130, 400, 120, 50);
         btn->hide();
-        powerUpButtons.push_back(btn);
+        m_powerUpButtons.push_back(btn);
         connect(btn, &QPushButton::clicked, this, [this, i]() { onPowerUpClicked(i); });
     }
 
-    uiTimer = new QTimer(this);
-    uiPassiveTimer = new QTimer(this);
-    connect(uiTimer, &QTimer::timeout, this, &GameWindow::addPassiveGrass);
-    connect(uiPassiveTimer, &QTimer::timeout, this, &GameWindow::updateUI);
-    uiTimer->start(1000); // updates every 1s
-    uiPassiveTimer->start(500); //updates every 0.5s
+    m_uiTimer = new QTimer(this);
+    m_uiPassiveTimer = new QTimer(this);
+    connect(m_uiTimer, &QTimer::timeout, this, &GameWindow::addPassiveGrass);
+    connect(m_uiPassiveTimer, &QTimer::timeout, this, &GameWindow::updateUI);
+    m_uiTimer->start(1000); // updates every 1s
+    m_uiPassiveTimer->start(500); //updates every 0.5s
 
-    musicToggleButton = new QPushButton("Toggle Music", this);
-    musicToggleButton->setGeometry(10, 10, 120, 30);
-    musicToggleButton->hide(); // hidden by default
-    connect(musicToggleButton, &QPushButton::clicked, this, &GameWindow::onMusicButtonToggled);
+    m_musicToggleButton = new QPushButton("Toggle Music", this);
+    m_musicToggleButton->setGeometry(10, 10, 120, 30);
+    m_musicToggleButton->hide(); // hidden by default
+    connect(m_musicToggleButton, &QPushButton::clicked, this, &GameWindow::onMusicButtonToggled);
 
-    powerUpHandler = PowerUpHandler([this]() {
-        musicToggleButton->show();
-    });
+    /*m_powerUpHandler = m_powerUpHandler([this]() {
+        m_musicToggleButton->show();
+    });*/
 
     updatePowerUps();
 }
@@ -50,30 +53,30 @@ void GameWindow::onGrassButtonClicked() {
 }
 
 void GameWindow::onPowerUpClicked(int index) {
-    powerUpHandler.tryPurchase(index);
+    m_powerUpHandler.tryPurchase(index);
     updatePowerUps();
 }
 
 void GameWindow::updateGrassLabel() {
-    grassLabel->setText("Grass: " + QString::number(GrassManager::getGrass()));
+    m_grassLabel->setText("Grass: " + QString::number(GrassManager::getGrass()));
     //updatePowerUps();
 }
 
 void GameWindow::updateUI() {
-    grassLabel->setText("Grass: " + QString::number(GrassManager::getGrass()));
+    m_grassLabel->setText("Grass: " + QString::number(GrassManager::getGrass()));
     updatePowerUps();
 }
 
 void GameWindow::updatePowerUps() {
-    const auto& active = powerUpHandler.getActivePowerUps();
+    const auto& active = m_powerUpHandler.getActivePowerUps();
     for (int i = 0; i < 4; ++i) {
         if (i < static_cast<int>(active.size())) {
             const auto& pu = active[i];
-            powerUpButtons[i]->setText(pu->getName() + " (" + QString::number(pu->getCost()) + ")");
-            powerUpButtons[i]->setEnabled(GrassManager::getGrass() >= pu->getCost());
-            powerUpButtons[i]->show();
+            m_powerUpButtons[i]->setText(pu->getName() + " (" + QString::number(pu->getCost()) + ")");
+            m_powerUpButtons[i]->setEnabled(GrassManager::getGrass() >= pu->getCost());
+            m_powerUpButtons[i]->show();
         } else {
-            powerUpButtons[i]->hide();
+            m_powerUpButtons[i]->hide();
         }
     }
 }
@@ -84,6 +87,6 @@ void GameWindow::addPassiveGrass() {
 }
 
 void GameWindow::onMusicButtonToggled() {
-    musicEnabled = !musicEnabled;
-    musicToggleButton->setText(musicEnabled ? "Music: ON" : "Music: OFF");
+    m_musicEnabled = !m_musicEnabled;
+    m_musicToggleButton->setText(m_musicEnabled ? "Music: ON" : "Music: OFF");
 }

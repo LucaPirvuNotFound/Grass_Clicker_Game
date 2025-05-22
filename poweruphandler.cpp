@@ -7,37 +7,37 @@
 #include <cstdlib>
 
 PowerUpHandler::PowerUpHandler(std::function<void()> onMusicUnlocked)
-    : musicUnlockCallback(onMusicUnlocked) {
+    : m_musicUnlockCallback(onMusicUnlocked) {
     for (int i = 0; i < 9; ++i) {
         int r = rand() % 3;
         switch (r) {
-        case 0: powerUpQueue.push_back(std::make_shared<Flower>()); break;
-        case 1: powerUpQueue.push_back(std::make_shared<Clicker>()); break;
-        case 2: powerUpQueue.push_back(std::make_shared<Music>(musicUnlockCallback)); break;
+        case 0: m_powerUpQueue.push_back(std::make_shared<Flower>()); break;
+        case 1: m_powerUpQueue.push_back(std::make_shared<Clicker>()); break;
+        case 2: m_powerUpQueue.push_back(std::make_shared<Music>(m_musicUnlockCallback)); break;
         }
     }
-    powerUpQueue.push_back(std::make_shared<Finisher>()); // Always last
+    m_powerUpQueue.push_back(std::make_shared<Finisher>()); // Always last
     generateNext();
 }
 
 void PowerUpHandler::tryPurchase(int index) {
-    if (index < 0 || index >= static_cast<int>(activePowerUps.size())) return;
+    if (index < 0 || index >= static_cast<int>(m_activePowerUps.size())) return;
 
-    auto& powerUp = activePowerUps[index];
+    auto& powerUp = m_activePowerUps[index];
     if (GrassManager::spendGrass(powerUp->getCost())) {
         powerUp->activate();
-        activePowerUps.erase(activePowerUps.begin() + index);
+        m_activePowerUps.erase(m_activePowerUps.begin() + index);
         generateNext();
     }
 }
 
 const std::vector<std::shared_ptr<PowerUp>>& PowerUpHandler::getActivePowerUps() const {
-    return activePowerUps;
+    return m_activePowerUps;
 }
 
 void PowerUpHandler::generateNext() {
-    while (activePowerUps.size() < 4 && !powerUpQueue.empty()) {
-        activePowerUps.push_back(powerUpQueue.front());
-        powerUpQueue.erase(powerUpQueue.begin());
+    while (m_activePowerUps.size() < 4 && !m_powerUpQueue.empty()) {
+        m_activePowerUps.push_back(m_powerUpQueue.front());
+        m_powerUpQueue.erase(m_powerUpQueue.begin());
     }
 }

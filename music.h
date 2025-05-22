@@ -10,7 +10,7 @@ public:
     std::shared_ptr<PowerUp> clone() const override;
 
 private:
-    std::function<void()> onMusicUnlocked;
+    std::function<void()> m_onMusicUnlocked;
 };
 
 #endif

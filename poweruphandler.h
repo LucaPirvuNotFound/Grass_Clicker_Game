@@ -12,9 +12,9 @@ public:
     const std::vector<std::shared_ptr<PowerUp>>& getActivePowerUps() const;
 
 private:
-    std::vector<std::shared_ptr<PowerUp>> activePowerUps;
-    std::vector<std::shared_ptr<PowerUp>> powerUpQueue;
-    std::function<void()> musicUnlockCallback;
+    std::vector<std::shared_ptr<PowerUp>> m_activePowerUps;
+    std::vector<std::shared_ptr<PowerUp>> m_powerUpQueue;
+    std::function<void()> m_musicUnlockCallback;
     void generateNext();
 };
 

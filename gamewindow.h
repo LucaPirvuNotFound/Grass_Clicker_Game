@@ -25,14 +25,14 @@ private slots:
     void onMusicButtonToggled();
 
 private:
-    QPushButton* grassButton;
-    QPushButton* musicToggleButton;
-    bool musicEnabled = false;
-    QLabel* grassLabel;
-    QTimer* uiTimer;
-    QTimer* uiPassiveTimer;
-    std::vector<QPushButton*> powerUpButtons;
-    PowerUpHandler powerUpHandler;
+    QPushButton* m_grassButton;
+    QPushButton* m_musicToggleButton;
+    bool m_musicEnabled = false;
+    QLabel* m_grassLabel;
+    QTimer* m_uiTimer;
+    QTimer* m_uiPassiveTimer;
+    std::vector<QPushButton*> m_powerUpButtons;
+    PowerUpHandler m_powerUpHandler;
 };
 
 #endif // GAMEWINDOW_H

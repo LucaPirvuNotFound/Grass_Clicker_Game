@@ -12,9 +12,9 @@ public:
     static int getClickPower();
 
 private:
-    static int grass;
-    static int passiveIncome;
-    static int clickPower;
+    static int s_grass;
+    static int s_passiveIncome;
+    static int s_clickPower;
 };
 
 #endif

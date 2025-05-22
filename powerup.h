@@ -16,8 +16,8 @@ public:
     int getCost() const;
 
 protected:
-    QString name;
-    int cost;
+    QString m_name;
+    int m_cost;
 };
 
 #endif
