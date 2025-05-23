@@ -17,6 +17,7 @@ SOURCES += \
     main.cpp \
     music.cpp \
     powerup.cpp \
+    powerupcounter.cpp \
     poweruphandler.cpp \
     testqt.cpp
 
@@ -28,7 +29,10 @@ HEADERS += \
     grassmanager.h \
     music.h \
     powerup.h \
+    powerupcounter.h \
+    powerupexception.h \
     poweruphandler.h \
+    templateutils.h \
     testqt.h
 
 FORMS += \

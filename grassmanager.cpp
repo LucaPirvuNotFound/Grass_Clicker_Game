@@ -1,22 +1,22 @@
 #include "grassmanager.h"
 
-int GrassManager::s_grass = 0;
-int GrassManager::s_passiveIncome = 0;
-int GrassManager::s_clickPower = 1;
+GrassManager::GrassManager() : m_grass(0), m_passiveIncome(0), m_clickPower(1) {}
 
-int GrassManager::getGrass() { return s_grass; }
-void GrassManager::addGrass(int amount) { s_grass += amount; }
+GrassManager& GrassManager::getInstance() {
+    static GrassManager instance;
+    return instance;
+}
+
+int GrassManager::getGrass() const { return m_grass; }
+void GrassManager::addGrass(int amount) { m_grass += amount; }
 bool GrassManager::spendGrass(int amount) {
-    if (s_grass >= amount) {
-        s_grass -= amount;
+    if (m_grass >= amount) {
+        m_grass -= amount;
         return true;
     }
     return false;
 }
-void GrassManager::addPassiveIncome(int amount) { s_passiveIncome += amount; }
-
-int GrassManager::getClickPower() {return s_clickPower; }
-
-void GrassManager::addClickPower(int amount) { s_clickPower += amount; }
-
-int GrassManager::getPassiveIncome() {return s_passiveIncome; }
+void GrassManager::addPassiveIncome(int amount) { m_passiveIncome += amount; }
+int GrassManager::getPassiveIncome() const { return m_passiveIncome; }
+void GrassManager::addClickPower(int amount) { m_clickPower += amount; }
+int GrassManager::getClickPower() const { return m_clickPower; }

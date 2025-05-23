@@ -1,5 +1,7 @@
 #include "gamewindow.h"
 #include "grassmanager.h"
+#include "powerupcounter.h"
+#include "flower.h"
 #include <QString>
 
 GameWindow::GameWindow(QWidget *parent)
@@ -41,14 +43,24 @@ GameWindow::GameWindow(QWidget *parent)
     /*m_powerUpHandler = m_powerUpHandler([this]() {
         m_musicToggleButton->show();
     });*/
+    m_PowerUpLabel = new QLabel("Power-Ups Owned: 0", this);
+    m_PowerUpLabel->setGeometry(450, 10, 150, 30);
 
+    PowerUpCounter* powerUpCounter = new PowerUpCounter(m_PowerUpLabel);
+    m_powerUpHandler.addObserver(powerUpCounter);
+
+    std::shared_ptr<Flower<int>> debug = std::make_shared<Flower<int>>(5);
+    debug->displayExtraInfo<std::string>("Hello");
+
+    std::shared_ptr<Flower<float>> debug2 = std::make_shared<Flower<float>>(32.98);
+    debug2->displayExtraInfo<int>(100);
     updatePowerUps();
 }
 
 GameWindow::~GameWindow() {}
 
 void GameWindow::onGrassButtonClicked() {
-    GrassManager::addGrass(GrassManager::getClickPower());
+    GrassManager::getInstance().addGrass(GrassManager::getInstance().getClickPower());
     updateGrassLabel();
 }
 
@@ -58,12 +70,12 @@ void GameWindow::onPowerUpClicked(int index) {
 }
 
 void GameWindow::updateGrassLabel() {
-    m_grassLabel->setText("Grass: " + QString::number(GrassManager::getGrass()));
+    m_grassLabel->setText("Grass: " + QString::number(GrassManager::getInstance().getGrass()));
     //updatePowerUps();
 }
 
 void GameWindow::updateUI() {
-    m_grassLabel->setText("Grass: " + QString::number(GrassManager::getGrass()));
+    m_grassLabel->setText("Grass: " + QString::number(GrassManager::getInstance().getGrass()));
     updatePowerUps();
 }
 
@@ -73,16 +85,17 @@ void GameWindow::updatePowerUps() {
         if (i < static_cast<int>(active.size())) {
             const auto& pu = active[i];
             m_powerUpButtons[i]->setText(pu->getName() + " (" + QString::number(pu->getCost()) + ")");
-            m_powerUpButtons[i]->setEnabled(GrassManager::getGrass() >= pu->getCost());
+            m_powerUpButtons[i]->setEnabled(GrassManager::getInstance().getGrass() >= pu->getCost());
             m_powerUpButtons[i]->show();
         } else {
             m_powerUpButtons[i]->hide();
         }
     }
+
 }
 
 void GameWindow::addPassiveGrass() {
-    GrassManager::addGrass(GrassManager::getPassiveIncome());
+    GrassManager::getInstance().addGrass(GrassManager::getInstance().getPassiveIncome());
     updateGrassLabel();
 }
 

@@ -29,6 +29,7 @@ private:
     QPushButton* m_musicToggleButton;
     bool m_musicEnabled = false;
     QLabel* m_grassLabel;
+    QLabel* m_PowerUpLabel;
     QTimer* m_uiTimer;
     QTimer* m_uiPassiveTimer;
     std::vector<QPushButton*> m_powerUpButtons;

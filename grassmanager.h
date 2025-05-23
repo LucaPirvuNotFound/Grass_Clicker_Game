@@ -3,18 +3,22 @@
 
 class GrassManager {
 public:
-    static int getGrass();
-    static void addGrass(int amount);
-    static bool spendGrass(int amount);
-    static int getPassiveIncome();
-    static void addPassiveIncome(int amount);
-    static void addClickPower(int amount);
-    static int getClickPower();
+    static GrassManager& getInstance();
+
+    int getGrass() const;
+    void addGrass(int amount);
+    bool spendGrass(int amount);
+    int getPassiveIncome() const;
+    void addPassiveIncome(int amount);
+    void addClickPower(int amount);
+    int getClickPower() const;
 
 private:
-    static int s_grass;
-    static int s_passiveIncome;
-    static int s_clickPower;
+    GrassManager();
+
+    int m_grass;
+    int m_passiveIncome;
+    int m_clickPower;
 };
 
 #endif
