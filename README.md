@@ -100,6 +100,10 @@ This document outlines the requirements and best practices for your C++ object-o
 - [x] Smart pointer-based container class
 - [x] Static members where appropriate
 - [x] STL usage
+- [x] Template class with `T` atribute and `U`-dependend member function
+- [x] A free template function
+- [x] 2 design patterns
+
 
 ---
 
